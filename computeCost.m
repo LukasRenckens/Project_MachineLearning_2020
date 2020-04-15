@@ -1,20 +1,22 @@
-function J = computeCost(X, y, theta)
-%COMPUTECOSTMULTI Compute cost for linear regression with multiple variables
-%   J = COMPUTECOSTMULTI(X, y, theta) computes the cost of using theta as the
-%   parameter for linear regression to fit the data points in X and y
+function [J, grad] = computeCost(X, y, theta, lambda)
+%LINEARREGCOSTFUNCTION Compute cost and gradient for regularized linear 
+%regression with multiple variables
+%   [J, grad] = computeCost(X, y, theta, lambda) computes the 
+%   cost of using theta as the parameter for linear regression to fit the 
+%   data points in X and y. Returns the cost in J and the gradient in grad
 
 % Initialize some useful values
 m = length(y); % number of training examples
 
 % You need to return the following variables correctly 
 J = 0;
+grad = zeros(size(theta));
 
-% ====================== YOUR CODE HERE ======================
-% Instructions: Compute the cost of a particular choice of theta
-%               You should set J to the cost.
+h = X*theta;
+theta_reg = [0;theta(2:end, :);];
+J = (1/(2*m))*sum((h-y).^2)+(lambda/(2*m))*theta_reg'*theta_reg;
+grad = (1/m)*(X'*(h-y)+lambda*theta_reg);
 
-J = (1/(2*m))*sum(power((X*theta - y),2));
-
-% =========================================================================
+grad = grad(:);
 
 end

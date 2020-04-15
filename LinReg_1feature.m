@@ -18,11 +18,16 @@ training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
-training = training(1:100,:);                % Take first few
-cv = cv(1:100,:);
+% Take first few data
+m = 100;
+training = training(1:m,:); 
+test = test(1:m,:);
+cv = cv(1:m,:);
 
 y = training(:,1);
 X = training(:,3);                       % Year produced  
+ytest = test(:,1);
+Xtest = test(:,3);
 ycv = cv(:,1);
 Xcv = cv(:,3);
 
@@ -31,8 +36,36 @@ m = length(y);                           % number of training examples
 [X mu sigma] = featureNormalize(X);      % Normalize every feature ~ -3<X<+3  
 
 % Add a column of ones to x
-X = [ones(m, 1), X];                     
+X = [ones(m, 1), X];     
+Xtest = [ones(size(Xtest, 1), 1), Xtest];
 Xcv = [ones(size(Xcv, 1), 1), Xcv];
+
+%% Ploynomial features
+% p = 2;
+% 
+% % Map X onto Polynomial Features and Normalize
+% X = polyFeatures(X, p);
+% [X, mu, sigma] = featureNormalize(X);  % Normalize
+% X = [ones(m, 1), X];                   % Add Ones
+% 
+% % Map X_poly_test and normalize (using mu and sigma)
+% Xtest = polyFeatures(Xtest, p);
+% Xtest = bsxfun(@minus, Xtest, mu);
+% Xtest = bsxfun(@rdivide, Xtest, sigma);
+% Xtest = [ones(size(Xtest, 1), 1), Xtest];         % Add Ones
+% 
+% 
+% % Map X_poly_val and normalize (using mu and sigma)
+% Xcv = polyFeatures(Xcv, p);
+% Xcv = bsxfun(@minus, Xcv, mu);
+% Xcv = bsxfun(@rdivide, Xcv, sigma);
+% Xcv = [ones(size(Xcv, 1), 1), Xcv];           % Add Ones
+% 
+
+% Add a column of ones to x
+% X = [ones(m, 1), X];     
+% Xtest = [ones(size(Xtest, 1), 1), Xtest];
+% Xcv = [ones(size(Xcv, 1), 1), Xcv];
 
 %% Plot data
 % plotData(training(:,2), training(:,1), 'Odometer value');

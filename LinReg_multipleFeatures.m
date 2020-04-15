@@ -12,19 +12,23 @@ data_array = table2array(data_table(:, [15 5 6 10 17 18 29]));
 % data_array = cat(2, numbers_array, data_array); 
 
 %% Process data
-%data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
+data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
 
 training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
-% Take first few
-training = training(1:100,:);                    
+% Take first few data
+m = 100;
+training = training(1:100,:);   
+test = test(1:100,:);
 cv = cv(1:100,:);
 
 % Odometer_value | year_produced | engine_capacity | nr_of_photos | up_counter | duration_listed
 y = training(:,1);
-X = training(:,[2 3 4 5 6 7]);                    
+X = training(:,[2 3 4 5 6 7]);  
+ytest = test(:,1);
+Xtest = test(:,[2 3 4 5 6 7]); 
 ycv = cv(:,1);
 Xcv = cv(:,[2 3 4 5 6 7]); 
 
@@ -33,7 +37,8 @@ m = length(y);                                     % Number of training examples
 [X mu sigma] = featureNormalize(X);                % Normalize every feature ~ -3<X<+3
 
 % Add a column of ones (x0) to X
-X = [ones(m, 1) X];                                
+X = [ones(m, 1) X];   
+Xtest = [ones(size(Xtest, 1), 1), Xtest];
 Xcv = [ones(size(Xcv, 1), 1), Xcv];
 %% Plot data
 

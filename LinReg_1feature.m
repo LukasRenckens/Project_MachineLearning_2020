@@ -18,7 +18,7 @@ training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30817:size(data_array)], :);      % Cross validation set 20%
 
-%training = training(1:100,:);                % Take first few
+training = training(1:100,:);                % Take first few
 
 % Split up and name data_array columns
 price_array = training(:,1);

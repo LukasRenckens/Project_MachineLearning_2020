@@ -12,7 +12,7 @@ data_array = table2array(data_table(:, [15 5 6 10 17 18 29]));
 % data_array = cat(2, numbers_array, data_array); 
 
 %% Process data
-data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
+%data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
 
 training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
@@ -103,12 +103,24 @@ fprintf('Cost computed = %f\n', J);
 % hold off % don't overlay any more plots on this figure
 
 % Plot training data and fit
-figure(1);
+figure;
 plot(X, y, 'rx', 'MarkerSize', 5, 'LineWidth', 1);
 plotFit(min(X), max(X), mu, sigma, theta, p);
+title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 
 %Plot the learning curve
 [error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);
+
+%% Validation for selecting lambda
+
+[lambda_vec, error_train, error_cv] = validationCurve(X_poly, y, X_poly_cv, ycv);
+
+figure;
+plot(lambda_vec, error_train, lambda_vec, error_cv);
+legend('Train', 'Cross Validation');
+xlabel('lambda');
+ylabel('Error');
+title('Validation curve for selecting lambda');
 
 %% Odometer value
 % 

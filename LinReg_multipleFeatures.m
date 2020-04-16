@@ -4,8 +4,8 @@ clear ; close all;
 %% Read data
 data_table = readtable('cars_custom.txt');
 
-% price_usd | Odometer_value | year_produced | engine_capacity | nr_of_photos | up_counter | duration_listed
-data_array = table2array(data_table(:, [15 5 6 10 17 18 29]));  
+% price_usd | Odometer_value | year_produced | engine_capacity 
+data_array = table2array(data_table(:, [15 5 6 10]));  
 
 % Add numbering column
 % numbers_array = [1:size(data_array)]';
@@ -24,13 +24,13 @@ cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 % test = test(1:100,:);
 % cv = cv(1:100,:);
 
-% Odometer_value | year_produced | engine_capacity | nr_of_photos | up_counter | duration_listed
+% Odometer_value | year_produced | engine_capacity 
 y = training(:,1);
-X = training(:,[2 3 4 5 6 7]);  
+X = training(:,[2 3 4]);  
 ytest = test(:,1);
-Xtest = test(:,[2 3 4 5 6 7]); 
+Xtest = test(:,[2 3 4]); 
 ycv = cv(:,1);
-Xcv = cv(:,[2 3 4 5 6 7]); 
+Xcv = cv(:,[2 3 4]); 
 
 m = length(y);                                     % Number of training examples
 
@@ -51,7 +51,7 @@ num_iters = 100;
 lambda = 0;
 
 % Init Theta and Run Gradient Descent 
-theta = zeros(7, 1);
+theta = zeros(4, 1);
 
 [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters, lambda);
 %theta = trainLinearReg(X, y, lambda);
@@ -80,18 +80,15 @@ x0 = 1;                                 % x0 = 1
 x1 = (10000 - mu(1,1))/sigma(1,1);      % x1 = Odometer value 
 x2 = (2000 - mu(1,2))/sigma(1,2);       % x2 = Production year 
 x3 = (2 - mu(1,3))/sigma(1,3);          % x3 = engine capacity
-x4 = (5 - mu(1,4))/sigma(1,4);          % x4 = number of photos
-x5 = (0 - mu(1,5))/sigma(1,5);          % x5 = up counter
-x6 = (10 - mu(1,6))/sigma(1,6);         % x6 = Duration listed
 
-price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3 + theta(5,1)*x4 + theta(6,1)*x5 + theta(7,1)*x6; 
+price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3; 
 
 fprintf(['Predicted price: $%f\n'], price);
 fprintf('\n');
 
 %% Normal equation
 y = training(:, 1);
-X = training(:, [2 3 4 5 6 7]);  
+X = training(:, [2 3 4]);  
 X = [ones(m, 1) X];   
 
 %No feature scaling needed for normal equation!
@@ -113,10 +110,7 @@ x0 = 1;                 % x0 = 1
 x1 = 10000;             % x1 = Odometer value 
 x2 = 2000;              % x2 = Production year 
 x3 = 2;                 % x3 = engine capacity
-x4 = 5;                 % x4 = number of photos
-x5 = 0;                 % x5 = up counter
-x6 = 10;                % x6 = Duration listed
 
-price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3 + theta(5,1)*x4 + theta(6,1)*x5 + theta(7,1)*x6; 
+price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3; 
 
 fprintf(['Predicted price: $%f\n'], price);

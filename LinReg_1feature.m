@@ -12,7 +12,7 @@ data_array = table2array(data_table(:, [15 5 6 10 17 18 29]));
 % data_array = cat(2, numbers_array, data_array); 
 
 %% Process data
-%data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
+data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
 
 training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
@@ -33,7 +33,11 @@ Xcv = cv(:,3);
 
 m = length(y);                           % number of training examples
 
-[X mu sigma] = featureNormalize(X);      % Normalize every feature ~ -3<X<+3  
+% Normalize every feature ~ -3<X<+3  
+%[X mu sigma] = featureNormalize(X);   
+y = featureNormalize(y); 
+ytest = featureNormalize(ytest); 
+ycv = featureNormalize(ycv); 
 
 % Add a column of ones to x
 % X = [ones(m, 1), X];     
@@ -41,7 +45,7 @@ m = length(y);                           % number of training examples
 % Xcv = [ones(size(Xcv, 1), 1), Xcv];
 
 %% Ploynomial features
-p = 3;
+p = 8;
 
 % Map X onto Polynomial Features and Normalize
 X_poly = polyFeatures(X, p);
@@ -60,15 +64,10 @@ X_poly_cv = bsxfun(@minus, X_poly_cv, mu);
 X_poly_cv = bsxfun(@rdivide, X_poly_cv, sigma);
 X_poly_cv = [ones(size(X_poly_cv, 1), 1), X_poly_cv];           % Add Ones
 
-% Add a column of ones to x
-% X = [ones(m, 1), X];     
-% Xtest = [ones(size(Xtest, 1), 1), Xtest];
-% Xcv = [ones(size(Xcv, 1), 1), Xcv];
-
 %% Plot data
-% plotData(training(:,2), training(:,1), 'Odometer value');
+plotData(training(:,2), training(:,1), 'Odometer value');
 % plotData(training(:,3), training(:,1), 'Production year');
-% plotData(training(:,4), training(:,1), 'Engine capacity');
+plotData(training(:,4), training(:,1), 'Engine capacity');
 % plotData(training(:,5), training(:,1), 'Number of photos');
 % plotData(training(:,6), training(:,1), 'Up counter');
 % plotData(training(:,7), training(:,1), 'Duration listed');
@@ -79,7 +78,7 @@ X_poly_cv = [ones(size(X_poly_cv, 1), 1), X_poly_cv];           % Add Ones
 % Some gradient descent settings
 iterations = 1500;
 alpha = 0.1;
-lambda = 1;
+lambda = 0.003;
 
 % initialize theta
 theta = zeros(3, 1);    
@@ -96,6 +95,7 @@ fprintf('%f\n', theta);
 J = computeCost(X_poly, y, theta, lambda);
 fprintf('Cost computed = %f\n', J);
 
+%% Plot results
 % Plot the linear fit
 % hold on; % keep previous plot visible
 % plot(X(:,2), X*theta, '-b')
@@ -104,23 +104,18 @@ fprintf('Cost computed = %f\n', J);
 
 % Plot training data and fit
 figure;
-plot(X, y, 'rx', 'MarkerSize', 5, 'LineWidth', 1);
+plot(X, y, 'rx', 'MarkerSize', 5);
 plotFit(min(X), max(X), mu, sigma, theta, p);
 title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
+xlabel('Production year');
+ylabel('Price car [usd]');
 
-%Plot the learning curve
+% Plot the learning curve
 [error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);
 
-%% Validation for selecting lambda
-
+% Plot validation curve for selecting lambda
 [lambda_vec, error_train, error_cv] = validationCurve(X_poly, y, X_poly_cv, ycv);
 
-figure;
-plot(lambda_vec, error_train, lambda_vec, error_cv);
-legend('Train', 'Cross Validation');
-xlabel('lambda');
-ylabel('Error');
-title('Validation curve for selecting lambda');
 
 %% Odometer value
 % 

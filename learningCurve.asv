@@ -34,6 +34,7 @@ end
 % title('Training')
 % xlabel('Number of training examples')
 % ylabel('Error')
+% 
 % figure;
 % plot(1:size(X, 1), error_cv);
 % title('Cross validation');
@@ -41,11 +42,8 @@ end
 % ylabel('Error')
 
 % 1 curve
-figure;
 plot(1:size(X, 1), error_train, 1:size(X, 1), error_cv);
-title('Learning curve for linear regression')
-xlabel('Number of training examples')
-ylabel('Error')
-legend('Train', 'Cross Validation')
+%title('Learning curve for linear regression')
+%legend('Train', 'Cross Validation')
 
 end

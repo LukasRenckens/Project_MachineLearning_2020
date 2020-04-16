@@ -19,10 +19,10 @@ test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
 % Take first few data
-m = 100;
-training = training(1:100,:);   
-test = test(1:100,:);
-cv = cv(1:100,:);
+% m = 100;
+% training = training(1:100,:);   
+% test = test(1:100,:);
+% cv = cv(1:100,:);
 
 % Odometer_value | year_produced | engine_capacity | nr_of_photos | up_counter | duration_listed
 y = training(:,1);
@@ -72,12 +72,12 @@ J = computeCost(X, y, theta, lambda);
 fprintf('Cost = %f\n', J);
 
 %Plot the learning curve
-[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
+%[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
 
 % Estimate the price of a car with: 
 % Normalized!
 x0 = 1;                                 % x0 = 1
-x1 = (10000 - mu(1,1))/sigma(1,1);      % x1 = Odometer value 
+x1 = (100000 - mu(1,1))/sigma(1,1);      % x1 = Odometer value 
 x2 = (2000 - mu(1,2))/sigma(1,2);       % x2 = Production year 
 x3 = (2 - mu(1,3))/sigma(1,3);          % x3 = engine capacity
 x4 = (5 - mu(1,4))/sigma(1,4);          % x4 = number of photos
@@ -110,7 +110,7 @@ fprintf('Cost = %f\n', J);
 
 % Estimate the price of a car with: 
 x0 = 1;                 % x0 = 1
-x1 = 10000;             % x1 = Odometer value 
+x1 = 100000;             % x1 = Odometer value 
 x2 = 2000;              % x2 = Production year 
 x3 = 2;                 % x3 = engine capacity
 x4 = 5;                 % x4 = number of photos

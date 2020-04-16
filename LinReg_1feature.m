@@ -12,7 +12,7 @@ data_array = table2array(data_table(:, [15 5 6 10 17 18 29]));
 % data_array = cat(2, numbers_array, data_array); 
 
 %% Process data
-%data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
+data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
 
 training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%

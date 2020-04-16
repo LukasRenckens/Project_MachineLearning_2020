@@ -19,10 +19,10 @@ test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
 % Take first few data
-m = 100;
-training = training(1:100,:);   
-test = test(1:100,:);
-cv = cv(1:100,:);
+% m = 100;
+% training = training(1:100,:);   
+% test = test(1:100,:);
+% cv = cv(1:100,:);
 
 % Odometer_value | year_produced | engine_capacity | nr_of_photos | up_counter | duration_listed
 y = training(:,1);
@@ -53,14 +53,14 @@ lambda = 0;
 % Init Theta and Run Gradient Descent 
 theta = zeros(7, 1);
 
-%[theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters, lambda);
-theta = trainLinearReg(X, y, lambda);
+[theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters, lambda);
+%theta = trainLinearReg(X, y, lambda);
 
 % Plot the convergence graph
-% figure;
-% plot(1:numel(J_history), J_history, '-b', 'LineWidth', 1);
-% xlabel('Number of iterations');
-% ylabel('Cost J');
+figure;
+plot(1:numel(J_history), J_history, '-b', 'LineWidth', 1);
+xlabel('Number of iterations');
+ylabel('Cost J');
 
 fprintf('== Gradient decent ==\n');
 
@@ -72,7 +72,7 @@ J = computeCost(X, y, theta, lambda);
 fprintf('Cost = %f\n', J);
 
 %Plot the learning curve
-[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
+%[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
 
 % Estimate the price of a car with: 
 % Normalized!

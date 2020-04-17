@@ -28,19 +28,24 @@ for i = 1:m
 end
 
 %Plot curves
+% 2 seperate curves
+% figure;
+% plot(1:size(X, 1), error_train);
+% title('Training')
+% xlabel('Number of training examples')
+% ylabel('Error')
+% figure;
+% plot(1:size(X, 1), error_cv);
+% title('Cross validation');
+% xlabel('Number of training examples')
+% ylabel('Error')
+
+% 1 curve
 figure;
-plot(1:size(X, 1), error_train);
-title('Train')
+plot(1:size(X, 1), error_train, 1:size(X, 1), error_cv);
+title('Learning curve for linear regression')
 xlabel('Number of training examples')
 ylabel('Error')
-
-figure;
-plot(1:size(X, 1), error_cv);
-title('Cross validation');
-xlabel('Number of training examples')
-ylabel('Error')
-
-%title('Learning curve for linear regression')
-%legend('Train', 'Cross Validation')
+legend('Train', 'Cross Validation')
 
 end

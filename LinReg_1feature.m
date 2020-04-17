@@ -72,13 +72,13 @@ plotData(training(:,4), training(:,1), 'Engine capacity');
 % plotData(training(:,6), training(:,1), 'Up counter');
 % plotData(training(:,7), training(:,1), 'Duration listed');
 
-%plotData(X(:,2), y, 'Production year');
+% plotData(X(:,2), y, 'Production year');
 
 %% Cost and Gradient descent
 % Some gradient descent settings
 iterations = 1500;
 alpha = 0.1;
-lambda = 0.003;
+lambda = 0.01;
 
 % initialize theta
 theta = zeros(3, 1);    
@@ -108,7 +108,7 @@ plot(X, y, 'rx', 'MarkerSize', 5);
 plotFit(min(X), max(X), mu, sigma, theta, p);
 title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 xlabel('Production year');
-ylabel('Price car [usd]');
+ylabel('Price car');
 
 % Plot the learning curve
 [error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);

@@ -19,7 +19,7 @@ test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
 % Take first few data
-m = 500;
+m = 100;
 training = training(1:m,:); 
 test = test(1:m,:);
 cv = cv(1:m,:);
@@ -34,35 +34,12 @@ Xcv = cv(:,3);
 m = length(y);                           % number of training examples
 
 % Normalize every feature ~ -3<X<+3  
-%[X mu sigma] = featureNormalize(X);   
-y = featureNormalize(y); 
-ytest = featureNormalize(ytest); 
-ycv = featureNormalize(ycv); 
+[X mu sigma] = featureNormalize(X);   
 
 % Add a column of ones to x
-% X = [ones(m, 1), X];     
-% Xtest = [ones(size(Xtest, 1), 1), Xtest];
-% Xcv = [ones(size(Xcv, 1), 1), Xcv];
-
-%% Ploynomial features
-p = 8;
-
-% Map X onto Polynomial Features and Normalize
-X_poly = polyFeatures(X, p);
-[X_poly, mu, sigma] = featureNormalize(X_poly);  % Normalize
-X_poly = [ones(m, 1), X_poly];                   % Add Ones
-
-% Map X_poly_test and normalize (using mu and sigma)
-X_poly_test = polyFeatures(Xtest, p);
-X_poly_test = bsxfun(@minus, X_poly_test, mu);
-X_poly_test = bsxfun(@rdivide, X_poly_test, sigma);
-X_poly_test = [ones(size(X_poly_test, 1), 1), X_poly_test];         % Add Ones
-
-% Map X_poly_val and normalize (using mu and sigma)
-X_poly_cv = polyFeatures(Xcv, p);
-X_poly_cv = bsxfun(@minus, X_poly_cv, mu);
-X_poly_cv = bsxfun(@rdivide, X_poly_cv, sigma);
-X_poly_cv = [ones(size(X_poly_cv, 1), 1), X_poly_cv];           % Add Ones
+X = [ones(m, 1), X];     
+Xtest = [ones(size(Xtest, 1), 1), Xtest];
+Xcv = [ones(size(Xcv, 1), 1), Xcv];
 
 %% Plot data
 plotData(training(:,2), training(:,1), 'Odometer value');
@@ -72,13 +49,13 @@ plotData(training(:,4), training(:,1), 'Engine capacity');
 % plotData(training(:,6), training(:,1), 'Up counter');
 % plotData(training(:,7), training(:,1), 'Duration listed');
 
-% plotData(X(:,2), y, 'Production year');
+plotData(X(:,2), y, 'Production year');
 
 %% Cost and Gradient descent
 % Some gradient descent settings
 iterations = 1500;
 alpha = 0.1;
-lambda = 0.01;
+lambda = 0;
 
 % initialize theta
 theta = zeros(3, 1);    
@@ -86,74 +63,19 @@ theta = zeros(3, 1);
 fprintf('\nRunning Gradient Descent ...\n')
 % run gradient descent
 %theta = gradientDescent(X, y, theta, alpha, iterations, lambda);
-theta = trainLinearReg(X_poly, y, lambda);
+theta = trainLinearReg(X, y, lambda);
 
 % print theta to screen
 fprintf('Theta found by gradient descent:\n');
 fprintf('%f\n', theta);
 
-J = computeCost(X_poly, y, theta, lambda);
+J = computeCost(X, y, theta, lambda);
 fprintf('Cost computed = %f\n', J);
 
 %% Plot results
-% Plot the linear fit
-% hold on; % keep previous plot visible
-% plot(X(:,2), X*theta, '-b')
-% legend('Training data', 'Linear regression')
-% hold off % don't overlay any more plots on this figure
-
-% Plot training data and fit
-figure;
-plot(X, y, 'rx', 'MarkerSize', 5);
-plotFit(min(X), max(X), mu, sigma, theta, p);
-title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
-xlabel('Production year');
-ylabel('Price car');
-
-% Plot the learning curve
-[error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);
-
-% Plot validation curve for selecting lambda
-[lambda_vec, error_train, error_cv] = validationCurve(X_poly, y, X_poly_cv, ycv);
-
-
-%% Odometer value
-% 
-% y = price_array;
-% X = odo_array;
-% m = length(y);                                           % number of training examples
-% [X mu sigma] = featureNormalize(X);                      % Normalize every feature ~ -3<X<+3    
-% X = [ones(m, 1), X];                                     % Add a column of ones to x
-% theta = zeros(2, 1);                                     % initialize fitting parameters
-%
-% %% Plot data
-% 
-% plotData(X(:,2), y, 'Odometer value');
-% 
-% %% Cost and Gradient descent
-% 
-% % Some gradient descent settings
-% iterations = 1500;
-% alpha = 0.1;
-% 
-% fprintf('\nRunning Gradient Descent ...\n')
-% % run gradient descent
-% %theta = gradientDescent(X, y, theta, alpha, iterations, lambda);
-% theta = trainLinearReg(X, y, lambda);
-% 
-% % print theta to screen
-% fprintf('Theta found by gradient descent:\n');
-% fprintf('%f\n', theta);
-% 
-% J = computeCost(X, y, theta, lambda);
-% fprintf('Cost computed = %f\n', J);
-% 
-% % Plot the linear fit
-% hold on; % keep previous plot visible
-% plot(X(:,2), X*theta, '-b')
-% legend('Training data', 'Linear regression')
-% hold off % don't overlay any more plots on this figure
-% 
-% 
-
+%Plot the linear fit
+hold on; % keep previous plot visible
+plot(X(:,2), X*theta, '-b')
+legend('Training data', 'Linear regression')
+hold off % don't overlay any more plots on this figure
 

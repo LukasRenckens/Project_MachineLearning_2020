@@ -74,7 +74,7 @@ plotData(X(:,2), y, 'Production year');
 % Some gradient descent settings
 % iterations = 1500;
 % alpha = 0.1;
-lambda = 0.003;
+lambda = 0.01;
 
 % initialize theta
 % theta = zeros(2, 1);    
@@ -106,7 +106,13 @@ X_poly_plot = [ones(size(x, 1), 1) X_poly_plot];
 % Plot
 plot(x, X_poly_plot * theta, '-b')
 legend('Training data', 'Polynomial regression')
+title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
+xlabel('Production year');
+ylabel('Price car');
 hold off % don't overlay any more plots on this figure
 
 %Plot the learning curve
 [error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);
+
+% Plot validation curve for selecting lambda
+[lambda_vec, error_train, error_cv] = validationCurve(X_poly, y, X_poly_cv, ycv);

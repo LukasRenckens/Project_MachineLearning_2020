@@ -4,8 +4,8 @@ clear ; close all;
 %% Read data
 data_table = readtable('cars_custom.txt');
 
-% price_usd | Odometer_value | year_produced | engine_capacity 
-data_array = table2array(data_table(:, [15 5 6 10]));  
+% price_usd | Odometer_value | year_produced | engine_capacity             %| nr_of_photos | up_counter | duration_listed
+data_array = table2array(data_table(:, [15 5 6 10]));                      % 17 18 29
 
 % Add numbering column
 % numbers_array = [1:size(data_array)]';
@@ -19,10 +19,10 @@ test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
 % Take first few data
-% m = 100;
-% training = training(1:100,:);   
-% test = test(1:100,:);
-% cv = cv(1:100,:);
+m = 100;
+training = training(1:100,:);   
+test = test(1:100,:);
+cv = cv(1:100,:);
 
 % Odometer_value | year_produced | engine_capacity 
 y = training(:,1);
@@ -48,7 +48,7 @@ Xcv = [ones(size(Xcv, 1), 1), Xcv];
 % Choose some alpha value
 alpha = 0.3;
 num_iters = 100;
-lambda = 0;
+lambda = 0.003;
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(4, 1);
@@ -59,6 +59,7 @@ theta = zeros(4, 1);
 % Plot the convergence graph
 figure;
 plot(1:numel(J_history), J_history, '-b', 'LineWidth', 1);
+title (sprintf('Curve for selecting alpha (alpha = %f)', alpha));
 xlabel('Number of iterations');
 ylabel('Cost J');
 
@@ -107,10 +108,16 @@ fprintf('Cost = %f\n', J);
 
 % Estimate the price of a car with: 
 x0 = 1;                 % x0 = 1
-x1 = 100000;             % x1 = Odometer value 
+x1 = 100000;            % x1 = Odometer value 
 x2 = 2000;              % x2 = Production year 
 x3 = 2;                 % x3 = engine capacity
 
 price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3; 
 
 fprintf(['Predicted price: $%f\n'], price);
+
+%Plot the learning curve
+[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
+
+% Plot validation curve for selecting lambda
+[lambda_vec, error_train, error_cv] = validationCurve(X, y, Xcv, ycv);

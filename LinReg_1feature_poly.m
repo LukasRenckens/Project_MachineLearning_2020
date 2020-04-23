@@ -2,27 +2,21 @@
 clear ; close all;
 
 %% Read data
-data_table = readtable('cars_custom.txt');
+data_table = readtable('cars_custom_rand.txt');
 
 % price_usd | Odometer_value | year_produced | engine_capacity              %| nr_of_photos | up_counter | duration_listed
-data_array = table2array(data_table(:, [15 5 6 10]));                       % 17 18 29
-
-% Add numbering column
-% numbers_array = [1:size(data_array)]';
-% data_array = cat(2, numbers_array, data_array); 
+data_array = table2array(data_table(:, [23 24 25 26])); 
 
 %% Process data
-data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
-
 training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
 % Take first few data
-m = 100;
-training = training(1:m,:); 
-test = test(1:m,:);
-cv = cv(1:m,:);
+% m = 100;
+% training = training(1:m,:); 
+% test = test(1:m,:);
+% cv = cv(1:m,:);
 
 y = training(:,1);
 X = training(:,3);                       % Year produced  
@@ -112,7 +106,7 @@ ylabel('Price car');
 hold off % don't overlay any more plots on this figure
 
 %Plot the learning curve
-[error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);
+%[error_train, error_cv] = learningCurve(X_poly, y, X_poly_cv, ycv, lambda);
 
 % Plot validation curve for selecting lambda
-[lambda_vec, error_train, error_cv] = validationCurve(X_poly, y, X_poly_cv, ycv);
+%[lambda_vec, error_train, error_cv] = validationCurve(X_poly, y, X_poly_cv, ycv);

@@ -2,27 +2,21 @@
 clear ; close all;
 
 %% Read data
-data_table = readtable('cars_custom.txt');
+data_table = readtable('cars_custom_rand.txt');
 
 % price_usd | Odometer_value | year_produced | engine_capacity             %| nr_of_photos | up_counter | duration_listed
-data_array = table2array(data_table(:, [15 5 6 10]));                      % 17 18 29
-
-% Add numbering column
-% numbers_array = [1:size(data_array)]';
-% data_array = cat(2, numbers_array, data_array); 
+data_array = table2array(data_table(:, [23 24 25 26])); 
 
 %% Process data
-data_array = data_array(randperm(size(data_array,1)),:); % Randomize order
-
 training = data_array([1:23113], :);               % Trainging set 60%
 test = data_array([23114:30817], :);               % Test set 20%
 cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
 
 % Take first few data
-m = 100;
-training = training(1:100,:);   
-test = test(1:100,:);
-cv = cv(1:100,:);
+% m = 100;
+% training = training(1:100,:);   
+% test = test(1:100,:);
+% cv = cv(1:100,:);
 
 % Odometer_value | year_produced | engine_capacity 
 y = training(:,1);
@@ -40,9 +34,6 @@ m = length(y);                                     % Number of training examples
 X = [ones(m, 1) X];   
 Xtest = [ones(size(Xtest, 1), 1), Xtest];
 Xcv = [ones(size(Xcv, 1), 1), Xcv];
-%% Plot data
-
-
 
 %% Cost and Gradient descent
 % Choose some alpha value
@@ -57,11 +48,11 @@ theta = zeros(4, 1);
 %theta = trainLinearReg(X, y, lambda);
 
 % Plot the convergence graph
-figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 1);
-title (sprintf('Curve for selecting alpha (alpha = %f)', alpha));
-xlabel('Number of iterations');
-ylabel('Cost J');
+% figure;
+% plot(1:numel(J_history), J_history, '-b', 'LineWidth', 1);
+% title (sprintf('Curve for selecting alpha (alpha = %f)', alpha));
+% xlabel('Number of iterations');
+% ylabel('Cost J');
 
 fprintf('== Gradient decent ==\n');
 
@@ -117,7 +108,7 @@ price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3;
 fprintf(['Predicted price: $%f\n'], price);
 
 %Plot the learning curve
-[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
+%[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
 
 % Plot validation curve for selecting lambda
-[lambda_vec, error_train, error_cv] = validationCurve(X, y, Xcv, ycv);
+%[lambda_vec, error_train, error_cv] = validationCurve(X, y, Xcv, ycv);

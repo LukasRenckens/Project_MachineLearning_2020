@@ -2,9 +2,9 @@
 clear ; close all;
 
 %% Read data
-data_table = readtable('cars_custom_rand.txt');                            % Read randomized data
+data_table = readtable('cars_custom_rand.txt');
 
-data_table = data_table(data_table.Var1=="Audi" & data_table.Var29<30, :); % Filter car_manufacturer, duration_listed
+test_table = data_table(data_table.Var29==Audi',:);
 
 % price_usd | Odometer_value | year_produced | engine_capacity | nr_of_photos | up_counter | duration_listed
 data_array = table2array(data_table(:, [23:29])); 

@@ -2,15 +2,21 @@
 clear ; close all;
 
 %% Read data
-data_table = readtable('cars_custom_rand.txt');
+data_table = readtable('cars_custom_rand.txt');                             % Read randomized data
+
+data_table = data_table(data_table.Var1=="Audi" & data_table.Var29<30, :); % Filter car_manufacturer, duration_listed
 
 % price_usd | Odometer_value | year_produced | engine_capacity              %| nr_of_photos | up_counter | duration_listed
 data_array = table2array(data_table(:, [23 24 25 26])); 
 
 %% Process data
-training = data_array([1:23113], :);               % Trainging set 60%
-test = data_array([23114:30817], :);               % Test set 20%
-cv = data_array([30818:size(data_array)], :);      % Cross validation set 20%
+c1 = floor(size(data_array,1)/100*60);
+c2 = c1+1;
+c3 = c2 + floor(size(data_array,1)/100*20);
+c4 = c3 + 1;
+training = data_array([1:c1], :);                % Trainging set 60%
+test = data_array([c2:c3], :);                   % Test set 20%
+cv = data_array([c4:size(data_array,1)], :);     % Cross validation set 20%
 
 % Take first few data
 % m = 100;

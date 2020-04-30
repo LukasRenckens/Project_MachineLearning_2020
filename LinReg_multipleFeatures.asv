@@ -4,7 +4,7 @@ clear ; close all;
 %% Read data
 data_table = readtable('cars_custom_rand.txt');                            % Read randomized data
 
-data_table = data_table(data_table.Var1=="Audi" & data_table.Var29<30, :); % Filter car_manufacturer, duration_listed
+data_table = data_table(data_table.Var1=="Audi"&data_table.Var29<30,:);    % Filter car_manufacturer, duration_listed
 
 % price_usd | Odometer_value | year_produced | engine_capacity             %| nr_of_photos | up_counter | duration_listed
 data_array = table2array(data_table(:, [23 24 25 26])); 
@@ -19,10 +19,10 @@ test = data_array([c2:c3], :);                   % Test set 20%
 cv = data_array([c4:size(data_array,1)], :);     % Cross validation set 20%
 
 % Take first few data
-% m = 100;
-% training = training(1:100,:);   
-% test = test(1:100,:);
-% cv = cv(1:100,:);
+m = 100;
+training = training(1:100,:);   
+test = test(1:100,:);
+cv = cv(1:100,:);
 
 % Odometer_value | year_produced | engine_capacity 
 y = training(:,1);
@@ -44,8 +44,8 @@ Xcv = [ones(size(Xcv, 1), 1), Xcv];
 %% Cost and Gradient descent
 % Choose some alpha value
 alpha = 0.3;
-num_iters = 100;
-lambda = 0.003;
+num_iters = 1500;
+lambda = 0.01;
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(4, 1);
@@ -116,7 +116,7 @@ price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3;
 fprintf(['Predicted price: $%f\n'], price);
 
 %Plot the learning curve
-%[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
+[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
 
 % Plot validation curve for selecting lambda
 %[lambda_vec, error_train, error_cv] = validationCurve(X, y, Xcv, ycv);

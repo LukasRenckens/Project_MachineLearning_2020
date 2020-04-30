@@ -76,12 +76,13 @@ lambda = 0.01;
 fprintf('\nRunning Gradient Descent ...\n')
 % run gradient descent
 %theta = gradientDescent(X, y, theta, alpha, iterations, lambda);
-theta = trainLinearReg(X_poly, y, lambda);
+theta = trainLinearReg(X_poly_test, ytest, lambda);
 
 % print theta to screen
 fprintf('Theta found by gradient descent:\n');
 fprintf('%f\n', theta);
 
+% Compute cost for test set
 J = computeCost(X_poly, y, theta, lambda);
 fprintf('Cost computed = %f\n', J);
 

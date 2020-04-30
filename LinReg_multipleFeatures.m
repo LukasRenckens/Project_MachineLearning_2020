@@ -44,8 +44,8 @@ lambda = 0.003;
 % Init Theta and Run Gradient Descent 
 theta = zeros(4, 1);
 
-[theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters, lambda);
-%theta = trainLinearReg(X, y, lambda);
+%[theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters, lambda);
+theta = trainLinearReg(X, y, lambda);
 
 % Plot the convergence graph
 % figure;
@@ -60,7 +60,8 @@ fprintf('== Gradient decent ==\n');
 fprintf('Theta:\n');
 fprintf(' %f \n', theta);
 
-J = computeCost(X, y, theta, lambda);
+% Compute cost for test set
+J = computeCost(Xtest, ytest, theta, lambda);
 fprintf('Cost = %f\n', J);
 
 %Plot the learning curve
@@ -94,7 +95,8 @@ fprintf('== Normal equation ==\n');
 fprintf('Theta:\n');
 fprintf(' %f \n', theta);
 
-J = computeCost(X, y, theta, lambda);
+% Compute cost for test set
+J = computeCost(Xtest, ytest, theta, lambda);
 fprintf('Cost = %f\n', J);
 
 % Estimate the price of a car with: 

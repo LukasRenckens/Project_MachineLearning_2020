@@ -32,11 +32,11 @@ Xcv = cv(:,3);
 m = length(y);                           % number of training examples 
 
 % Normalize every feature ~ -3<X<+3  
-[X_reg mu sigma] = featureNormalize(X);
+[X_norm mu sigma] = featureNormalize(X);
 
 % Add a column of ones to x
 X = [ones(m, 1), X]; 
-X_reg = [ones(m, 1), X_reg];
+X_norm = [ones(m, 1), X_norm];
 Xtest = [ones(size(Xtest, 1), 1), Xtest];
 Xcv = [ones(size(Xcv, 1), 1), Xcv];
 
@@ -62,19 +62,20 @@ theta = zeros(3, 1);
 fprintf('\nRunning Gradient Descent ...\n')
 % run gradient descent
 %theta = gradientDescent(X, y, theta, alpha, iterations, lambda);
-theta = trainLinearReg(X_reg, y, lambda);
+theta = trainLinearReg(X_norm, y, lambda);
 
 % print theta to screen
 fprintf('Theta found by gradient descent:\n');
 fprintf('%f\n', theta);
 
-J = computeCost(X_reg, y, theta, lambda);
+% Compute cost for test set
+J = computeCost(Xtest, ytest, theta, lambda);
 fprintf('Cost computed = %f\n', J);
 
 %% Plot results
 %Plot the linear fit
 hold on; % keep previous plot visible
-plot(X(:,2), X_reg*theta, '-b')
+plot(X(:,2), X_norm*theta, '-b')
 legend('Training data', 'Linear regression')
 hold off % don't overlay any more plots on this figure
 

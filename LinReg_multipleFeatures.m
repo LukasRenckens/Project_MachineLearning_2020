@@ -5,7 +5,8 @@ clear ; close all;
 data_table = readtable('cars_custom_rand.txt');                            % Read randomized data
 
 % Filter car_manufacturer, model_name, transmission, engine_fuel, drivetrain, duration_listed 
-data_table = data_table(data_table.Var1=="Volkswagen" & data_table.Var2=="Passat" & data_table.Var3=="mechanical" & data_table.Var5=="gasoline" & data_table.Var11=="front" & data_table.Var29<100, :); 
+%data_table = data_table(data_table.Var1=="Volkswagen" & data_table.Var2=="Passat" & data_table.Var3=="mechanical" & data_table.Var5=="gasoline" & data_table.Var11=="front" & data_table.Var29<100, :); 
+%data_table = data_table(data_table.Var1=="Volkswagen" & data_table.Var2=="Passat",:);
 
 % price_usd | Odometer_value | year_produced | engine_capacity             %| nr_of_photos | up_counter | duration_listed
 data_array = table2array(data_table(:, [23 24 25 26])); 
@@ -77,7 +78,7 @@ fprintf('Cost = %f\n', J);
 % Estimate the price of a car with: 
 % Normalized!
 x0 = 1;                                 % x0 = 1
-x1 = (100000 - mu(1,1))/sigma(1,1);      % x1 = Odometer value 
+x1 = (100000 - mu(1,1))/sigma(1,1);     % x1 = Odometer value 
 x2 = (2000 - mu(1,2))/sigma(1,2);       % x2 = Production year 
 x3 = (2 - mu(1,3))/sigma(1,3);          % x3 = engine capacity
 
@@ -85,6 +86,9 @@ price = theta(1,1)*x0 + theta(2,1)*x1 + theta(3,1)*x2 + theta(4,1)*x3;
 
 fprintf(['Predicted price: $%f\n'], price);
 fprintf('\n');
+
+%Plot the learning curve
+%[error_train, error_cv] = learningCurve(X, y, Xcv, ycv, lambda);
 
 %% Normal equation
 y = training(:, 1);

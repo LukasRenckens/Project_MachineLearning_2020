@@ -5,7 +5,8 @@ clear ; close all;
 data_table = readtable('cars_custom_rand.txt');                             % Read randomized data
 
 % Filter car_manufacturer, model_name, transmission, engine_fuel, drivetrain, duration_listed 
-data_table = data_table(data_table.Var1=="Volkswagen" & data_table.Var2=="Passat" & data_table.Var3=="mechanical" & data_table.Var5=="gasoline" & data_table.Var11=="front" & data_table.Var29<100, :); 
+%data_table = data_table(data_table.Var1=="Volkswagen" & data_table.Var2=="Passat" & data_table.Var3=="mechanical" & data_table.Var5=="gasoline" & data_table.Var11=="front" & data_table.Var29<100, :); 
+data_table = data_table(data_table.Var1=="Volkswagen" & data_table.Var2=="Passat",:);
 
 % price_usd | Odometer_value | year_produced | engine_capacity              %| nr_of_photos | up_counter | duration_listed
 data_array = table2array(data_table(:, [23 24 25 26])); 
